@@ -81,7 +81,7 @@ efa_bahcs2 <- fa.poly(train[,1:10], nfactors=2, rotate="varimax")
 efa_bahcs3 <- fa.poly(train[,1:10], nfactors=3, rotate="varimax")
 
 efa_bahcs1$fa$loadings
-fap <- fa.parallel.poly(train[,1:10])   # parallel analysis for dichotomous data
+fap <- fa.parallel.poly(train[,1:10], fa = "fa")   # parallel analysis for dichotomous data
 fap$pc.values
 fap$fa.values
 fa.diagram(fap)
@@ -111,10 +111,12 @@ model_BAHCS
 BAHCS.model.graded.c<-mirt(clean.data[,1:10], model=model_BAHCS, itemtype = "graded", technical=list(removeEmptyRows=TRUE))
 BAHCS.model.pcm.c<-mirt(clean.data[,1:10], model=model_BAHCS, itemtype = "Rasch", technical=list(removeEmptyRows=TRUE))
 BAHCS.model.gpcm.c<-mirt(clean.data[,1:10], model=model_BAHCS, itemtype = "gpcm", technical=list(removeEmptyRows=TRUE))
-
+BAHCS.model.grsm.c<-mirt(clean.data[,1:10], model=model_BAHCS, itemtype = "grsm", technical=list(removeEmptyRows=TRUE))
 
 anova(BAHCS.model.pcm.c, BAHCS.model.graded.c)
 anova(BAHCS.model.graded.c,BAHCS.model.gpcm.c)
+BAHCS.model.graded.c
+BAHCS.model.grsm.c
 
 summary(BAHCS.model.graded.c, suppress = 0.25)
 
@@ -333,8 +335,8 @@ comp.m2
 
 coef.pcm <- coef(results.pcm, IRTpars=TRUE, simplify=TRUE)
 #We can save the estimated item parameters as a new data frame called items.pcm and print the results using the following commands:
-  
-  items.pcm <- as.data.frame(coef.pcm$items)
+
+items.pcm <- as.data.frame(coef.pcm$items)
 print(items.pcm)
 
 #itemtype="Rasch", SE=TRUE, verbose=FALSE
@@ -438,8 +440,8 @@ itemfit(model.rasch, method='ML')
 
 itemfit(model.rating)#, empirical.plot = 1) #empirical item plot
 
-  
-  x <- mirt(data, 1)
+
+x <- mirt(data, 1)
 raschfit <- mirt(data, 1, itemtype='Rasch')
 fit <- itemfit(x)
 fit
